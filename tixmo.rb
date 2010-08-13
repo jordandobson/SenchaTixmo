@@ -19,7 +19,7 @@ helpers do
       request.env['X_PROXY'] = 'm.tixato.dev'
       request.env['X_PROXY_PORT'] = 3000
     else
-      request.env['X_PROXY'] = 'm.tixatobeta.com'
+      request.env['X_PROXY'] = 'api.tixatobeta.com'
     end
     # this gets handled by tixato proxy
   end
