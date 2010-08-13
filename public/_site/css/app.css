@@ -1,0 +1,161 @@
+body{
+  background-color:       #e2e5ea;
+}
+
+/* Form Wrapper
+*********************************************************************/
+
+form.login{
+  padding:                .5em;
+  font-size:              20px;
+  background-color:       #e2e5ea;
+  height:                 200%;
+  line-height:            1em;
+  width:                  100%;
+  -webkit-box-sizing:     padding-box;
+}
+
+/* Form Error
+*********************************************************************/
+
+form.login > p.alert{
+  width:                  100%;
+  padding:                .5em;
+  -webkit-box-sizing:     content-box;
+  margin:                 -.5em 0 .5em -.5em;
+  font-size:              1em;
+  font-weight:            bold;
+  margin-bottom:          .666em;
+  line-height:            1em;
+  -webkit-box-shadow:     0em .05em .05em #fff;
+  background-image:       -webkit-gradient( linear, 0% 0%, 0% 100%, from(rgba(0,0,0,.25)), to(rgba(0,0,0,.0)));
+  color:                  #fff;
+  text-shadow:            0em -.05em 0em rgba(0,0,0,.5);
+  text-align:             center;
+  -webkit-font-smoothing: antialiased;
+}
+
+form.login > p.alert > strong{
+  font-size:            .65em;
+  font-weight:          bold;
+  line-height:          inherit;
+  display:              block;
+}
+
+form.login > p.alert.error{
+  background-color:       #dd2200;
+}
+
+form.login > p.alert.good{
+  background-color:       #009922;
+}
+
+/* Inputs
+*********************************************************************/
+
+input{
+  display:              block;
+  width:                100%;
+  border:               none;
+  color:                #333;
+  font-size:            .75em;
+  height:               2.75em;
+  padding-left:         .666em;
+  margin:               0;
+  background-color:     #f7f7f7;
+  font-family:          Helvetica Neue, Helvetica, arial, sans-serif;
+  -webkit-appearance:   none;
+  -webkit-transition:   all .33s ease-in;
+}
+
+input::-webkit-input-placeholder{
+  font-weight:            bold;
+  color:                  #111;
+}
+
+input:active{
+  outline:                none;
+  background-color:       #ddd;
+}
+
+input:focus{
+  outline:                none;
+  background-color:       #fff;
+}
+
+/* Group Settings
+*********************************************************************/
+
+form.login > .group{
+  -webkit-border-radius:  .5em;
+/*   background-color:       #e3e3e3; */
+  border:                 .05em solid #b6b8bd;
+  -webkit-box-shadow:     0em .05em 0em #fff;
+  /* Space for first top <input> shadow */
+  padding-top:            .05em;
+}
+
+.group > input{
+  -webkit-border-radius:  0;
+  border-top:             .0666em solid #fdfdfd;
+  border-bottom:          .0666em solid #cbcbcb;
+}
+
+.group > input:first-child{
+  border-top:             none;
+  -webkit-box-shadow:     0em -.0666em 0em #e3e3e3;
+  
+  -webkit-border-top-left-radius:   inherit;
+  -webkit-border-top-right-radius:  inherit;
+}
+
+.group > input:last-child{
+  border-bottom:          none;
+  
+  -webkit-border-bottom-left-radius:  inherit;
+  -webkit-border-bottom-right-radius: inherit;
+}
+
+/* Login Submit Button
+*********************************************************************/
+
+form.login > a.submit{
+  margin-top:             .5em;
+  font-size:              1em;
+  display:                block;
+  background-image:       -webkit-gradient( linear, 0% 0%, 0% 100%, from(rgba(153,153,153,1.0)), to(rgba(102,102,102,1.0)));
+  -webkit-border-radius:  .25em;
+  text-align:             center;
+  font-weight:            bold;
+  text-decoration:        none;
+  color:                  #f7f7f7;
+  line-height:            2em;
+  text-shadow:            0em -.05em .0em rgba(0,0,0,.75);
+  -webkit-box-shadow:     0em .1em .15em rgba(0,0,0,.25);
+  border:                 .05em solid #555;
+  border-top-color:       #999;
+  border-bottom-color:    #444;
+  position:               relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+form.login > a.submit:active{
+  background-color:       #333;
+  background-image:       -webkit-gradient( linear, 0% 0%, 0% 100%, from(rgba(153,153,153,.66)), to(rgba(102,102,102,.66)));  
+}
+
+form.login > a.submit::before{
+  content:                "";
+  display:                block;
+  position:               absolute;
+  background-color:       rgba(255,255,255,.15);
+  height:                 50%;
+  top:                    0;
+  left:                   -.05em;
+  right:                  -.05em;
+  border-top:             .05em solid rgba(255,255,255,.33);
+  -webkit-box-sizing:     border-box;
+  
+  -webkit-border-top-left-radius:   inherit;
+  -webkit-border-top-right-radius:  inherit;
+}
