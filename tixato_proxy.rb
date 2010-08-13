@@ -11,7 +11,7 @@ class TixatoProxy < Rack::Proxy
   
   def call(env)
     triplet = @app.call(env)
-    if env['DO_PROXY']
+    if env['X_PROXY']
       rewrite_response(perform_request(rewrite_env(env)))
     else
       triplet
@@ -19,9 +19,9 @@ class TixatoProxy < Rack::Proxy
   end
   
   def rewrite_env(env)
-    env['HTTP_HOST'] = 'tixatobeta.com'
+    env['HTTP_HOST'] = env['X_PROXY']
     
-    env['SERVER_PORT'] = 80
+    env['SERVER_PORT'] = env['X_PROXY_PORT'] || 80
     # env['SERVER_PORT'] = 443
     # env['rack.url_scheme'] = 'https'
     

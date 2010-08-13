@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>api test sandbox</title>
+    <script src="http://code.jquery.com/jquery-1.4.1.min.js" type="text/javascript"></script> 
+    <style type="text/css" media="screen">
+      body {
+        font-family: Helvetica;
+        font-size: 0.8em;
+        margin: 30px;
+      }
+      h1 {
+        font-size: 1.5em;
+        color: #666;
+      }
+      label {
+        display: inline-block;
+        width: 70px;
+      }
+      input {
+        margin-bottom: 10px;
+      }
+      textarea {
+        display: block;
+        margin-top: 20px;
+        width: 400px;
+        height: 100px;
+        font-size: 1.2em;
+        padding: 10px;
+        border: 1px solid #ccc;
+      }
+    </style>
+    <script type="text/javascript">
+      function doLogin() {
+        $.ajax({
+          type: 'POST',
+          dataType: 'text',
+          url: '/login.json',
+          data: $('#login_form').serialize(),
+          success: function(data) {
+            $("#output").html(data);
+          }
+        })
+      }
+    </script>
+  </head>
+  <body>
+    
+    <h1>JSON API test</h1>
+    
+    <form id="login_form" onsubmit="doLogin(); return false;">
+    <label for="login">login</label><input id="login" name="login" type="text">
+    <br/>
+    <label for="password">password</label><input id="password" name="password" type="password">
+    <br/>
+    <input type="submit" value="Log in"/>
+    
+    <textarea id="output"></textarea>
+    
+  </body>
+</html>
