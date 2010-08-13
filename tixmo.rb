@@ -3,8 +3,14 @@ require 'bundler'
 Bundler.setup
 require 'sinatra'
 require 'tixato_proxy'
+require 'rack/cache'
 require 'logger'
 
+use Rack::Cache,
+  :verbose     => false,
+  :metastore   => 'file:tmp/cache/rack/meta',
+  :entitystore => 'file:tmp/cache/rack/body'
+  
 use TixatoProxy
 
 get '/' do
@@ -13,5 +19,5 @@ end
 
 get '*' do
   request.env['DO_PROXY'] = true
-  # rack should step in here?
+  # this gets handled by tixato proxy
 end

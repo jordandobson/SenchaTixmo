@@ -2,6 +2,8 @@ GEM
   remote: http://rubygems.org/
   specs:
     rack (1.2.1)
+    rack-cache (0.5.2)
+      rack (>= 0.4)
     rack-proxy (0.3.3)
       rack
     sinatra (1.0)
@@ -11,5 +13,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  rack-cache
   rack-proxy
   sinatra
