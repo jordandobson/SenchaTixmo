@@ -15,7 +15,7 @@ use TixatoProxy
 
 helpers do
   def proxy
-    if ENV['RACK_ENV'] == 'development'
+    if ENV['RACK_ENV'] == 'local'
       request.env['X_PROXY'] = 'm.tixato.dev'
       request.env['X_PROXY_PORT'] = 3000
     else
