@@ -181,8 +181,7 @@ Ext.setup({
                 id:             'loginFormUsername',
                 xtype:          'emailfield',
                 name :          'login',
-                placeholder:    'Username',
-                value:          'jordandobson',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                placeholder:    'Username',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
                 baseCls:        'x-plain',
                 cls:            'custom',
                 listeners:{     keyup: function(thisField, e) { checkForEnter(e.browserEvent.keyCode, this); } }
@@ -191,7 +190,6 @@ Ext.setup({
                 id:             'loginFormPassword',
                 name :          'password',
                 placeholder:    'Password',
-                value:          'awesome',
                 baseCls:        'x-plain',
                 cls:            'custom',
                 listeners:{     keyup: function(thisField, e) { checkForEnter(e.browserEvent.keyCode, this); } }
