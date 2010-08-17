@@ -6,8 +6,7 @@ body{
 *********************************************************************/
 
 form.login{
-  padding:                .5em;
-  font-size:              20px;
+  font-size:              20px; /* 1.25em */
   background-color:       #e2e5ea;
   height:                 200%;
   line-height:            1em;
@@ -15,48 +14,57 @@ form.login{
   -webkit-box-sizing:     padding-box;
 }
 
-/* Form Error
+/* Form Children Container Spacing
 *********************************************************************/
 
-form.login > p.alert{
-  width:                  100%;
-  padding:                .5em;
-  -webkit-box-sizing:     content-box;
-  margin:                 -.5em 0 .5em -.5em;
-  font-size:              1em;
-  font-weight:            bold;
-  margin-bottom:          .666em;
-  line-height:            1em;
-  -webkit-box-shadow:     0em .05em .05em #fff;
-  background-image:       -webkit-gradient( linear, 0% 0%, 0% 100%, from(rgba(0,0,0,.25)), to(rgba(0,0,0,.0)));
-  color:                  #fff;
-  text-shadow:            0em -.05em 0em rgba(0,0,0,.5);
-  text-align:             center;
-  -webkit-font-smoothing: antialiased;
+form.login .group.x-plain,
+form.login .submit.x-plain{
+  margin: .5em;
 }
 
-form.login > p.alert > strong{
-  font-size:            .65em;
-  font-weight:          bold;
-  line-height:          inherit;
-  display:              block;
+/* Group Settings
+*********************************************************************/
+
+form.login .group{
+  -webkit-border-radius:  .5em;
+  border:                 .05em solid #b6b8bd;
+  -webkit-box-shadow:     0em .05em 0em #fff;
+  padding-top:            .05em; /* Space for 1st top <input> shadow */
 }
 
-form.login > p.alert.error{
-  background-color:       #dd2200;
+form.login .group div{
+  -webkit-border-radius:  inherit;  
 }
 
-form.login > p.alert.good{
-  background-color:       #009922;
+form.login .group input{
+  -webkit-border-radius:  0;
+  border-top:             .0666em solid #fdfdfd;
+  border-bottom:          .0666em solid #cbcbcb;
 }
+
+form.login .group input[name="login"]{
+  border-top:             none;
+  -webkit-box-shadow:     0em -.0666em 0em #e3e3e3;
+  
+  -webkit-border-top-left-radius:   inherit;
+  -webkit-border-top-right-radius:  inherit;
+}
+
+form.login .group input[name="password"]{
+  border-bottom:          none;
+  
+  -webkit-border-bottom-left-radius:  inherit;
+  -webkit-border-bottom-right-radius: inherit;
+}
+
 
 /* Inputs
 *********************************************************************/
 
-input{
+form.login input{
   display:              block;
   width:                100%;
-  border:               none;
+  border:               0;
   color:                #333;
   font-size:            .75em;
   height:               2.75em;
@@ -68,58 +76,26 @@ input{
   -webkit-transition:   all .33s ease-in;
 }
 
-input::-webkit-input-placeholder{
+form.login input::-webkit-input-placeholder{
   font-weight:            bold;
-  color:                  #111;
+  color:                  #444;
+  text-shadow: 0px 1px 0px #fff;
 }
 
-input:active{
-  outline:                none;
-  background-color:       #ddd;
-}
-
-input:focus{
+form.login input:active{
   outline:                none;
   background-color:       #fff;
 }
 
-/* Group Settings
-*********************************************************************/
-
-form.login > .group{
-  -webkit-border-radius:  .5em;
-/*   background-color:       #e3e3e3; */
-  border:                 .05em solid #b6b8bd;
-  -webkit-box-shadow:     0em .05em 0em #fff;
-  /* Space for first top <input> shadow */
-  padding-top:            .05em;
-}
-
-.group > input{
-  -webkit-border-radius:  0;
-  border-top:             .0666em solid #fdfdfd;
-  border-bottom:          .0666em solid #cbcbcb;
-}
-
-.group > input:first-child{
-  border-top:             none;
-  -webkit-box-shadow:     0em -.0666em 0em #e3e3e3;
-  
-  -webkit-border-top-left-radius:   inherit;
-  -webkit-border-top-right-radius:  inherit;
-}
-
-.group > input:last-child{
-  border-bottom:          none;
-  
-  -webkit-border-bottom-left-radius:  inherit;
-  -webkit-border-bottom-right-radius: inherit;
+form.login input:focus{
+  outline:                none;
+  background-color:       #fff;
 }
 
 /* Login Submit Button
 *********************************************************************/
 
-form.login > a.submit{
+form.login .submit span{
   margin-top:             .5em;
   font-size:              1em;
   display:                block;
@@ -137,14 +113,14 @@ form.login > a.submit{
   border-bottom-color:    #444;
   position:               relative;
   -webkit-font-smoothing: antialiased;
+  cursor:                 pointer;
 }
 
-form.login > a.submit:active{
-  background-color:       #333;
-  background-image:       -webkit-gradient( linear, 0% 0%, 0% 100%, from(rgba(153,153,153,.66)), to(rgba(102,102,102,.66)));  
+form.login .submit span:active{
+  background-image:       -webkit-gradient( linear, 0% 0%, 0% 100%, from(rgba(113,113,113,1.0)), to(rgba(62,62,62,1.0)));  
 }
 
-form.login > a.submit::before{
+form.login .submit span::before{
   content:                "";
   display:                block;
   position:               absolute;
@@ -159,3 +135,183 @@ form.login > a.submit::before{
   -webkit-border-top-left-radius:   inherit;
   -webkit-border-top-right-radius:  inherit;
 }
+
+/* Form Error
+*********************************************************************/
+
+div.alert.nonform{
+  font-size:              1.25em;
+}
+
+div.alert{
+  padding:                0;
+  margin:                 0;
+}
+
+div.alert p{
+  width:                  100%;
+  padding:                .5em 0;
+  -webkit-box-sizing:     content-box;
+  font-size:              1em;
+  font-weight:            bold;
+  margin-bottom:          .666em;
+  line-height:            1em;
+  -webkit-box-shadow:     0em .05em .05em #fff;
+  background-image:       -webkit-gradient( linear, 0% 0%, 0% 100%, from(rgba(0,0,0,.25)), to(rgba(0,0,0,.0)));
+  color:                  #fff;
+  text-shadow:            0em -.05em 0em rgba(0,0,0,.5);
+  text-align:             center;
+  -webkit-font-smoothing: antialiased;
+}
+
+div.alert p > strong{
+  padding:                0;
+  font-size:              .65em;
+  font-weight:            bold;
+  line-height:            inherit;
+  display:                block;
+  margin:                 0;
+}
+
+div.alert p.success{
+  background-color:       #009922;
+}
+
+div.alert p.failure{
+  background-color:       #dd2200;
+}
+
+div.alert p.blank{
+  background-color:       #ff9900;
+}
+
+div.alert p.notify{
+  background-color:       #999999;
+}
+
+
+/* Loading Indicator
+*********************************************************************/
+
+div.wrapper{
+  width:                    100%;
+  height:                   100%;
+  background-color:         rgba(0,0,0,.5);
+  position:                 relative;
+  font-size:                2em;
+}
+
+/* Loading Container */
+        
+.spins{
+  position:                 absolute;
+  top:                      .95em;
+  left:                     50%;
+  margin-left:              -.5em;
+  height:                   1em;
+  width:                    1em;
+  -webkit-transform-origin: .5em .5em;
+  -moz-transform-origin:    .5em .5em;
+
+}
+
+/* Shared Properties for all the lines */
+
+.spins > span,
+.spins > span::before,
+.spins > span::after{
+  display:                  block;
+  position:                 absolute;
+  width:                    .1em;
+  height:                   .25em;
+  top:                      0;
+  -webkit-transform-origin: .05em .5em;
+  border-radius:            .1em;
+  -webkit-border-radius:    .2em;
+}
+
+.spins > span{
+  left:         50%;
+  margin-left:  -0.05em;
+}
+
+.spins > span::before, 
+.spins > span::after{
+  content: " ";
+}
+
+/* Rotate each of the 4 Spans */
+
+.spins > span.t{ -webkit-transform: rotate(0deg);   }
+.spins > span.r{ -webkit-transform: rotate(90deg);  }
+.spins > span.b{ -webkit-transform: rotate(180deg); }
+.spins > span.l{ -webkit-transform: rotate(270deg); }
+
+/* These are the two lines that surround each of the 4 Span lines */
+
+.spins > span::before{ -webkit-transform: rotate(30deg);  }
+.spins > span::after{ -webkit-transform: rotate(-30deg);  }
+
+/* Set Colors */
+
+.spins > span.t        {  background-color: rgba(255,255,255,0.99); }
+.spins > span.t::after {  background-color: rgba(255,255,255,0.90); }
+.spins > span.l::before{  background-color: rgba(255,255,255,0.80); }
+.spins > span.l        {  background-color: rgba(255,255,255,0.70); }
+.spins > span.l::after {  background-color: rgba(255,255,255,0.60); }
+.spins > span.b::before{  background-color: rgba(255,255,255,0.50); }
+.spins > span.b        {  background-color: rgba(255,255,255,0.40); }
+.spins > span.b::after {  background-color: rgba(255,255,255,0.35); }
+.spins > span.r::before{  background-color: rgba(255,255,255,0.30); }
+.spins > span.r        {  background-color: rgba(255,255,255,0.25); }
+.spins > span.r::after {  background-color: rgba(255,255,255,0.20); }
+.spins > span.t::before{  background-color: rgba(255,255,255,0.15); }
+
+/* Set Animation */
+
+.spins {
+  -webkit-animation-name:             rotatingLoader;
+  -webkit-animation-duration:         .5s;
+  -webkit-animation-iteration-count:  infinite;
+  -webkit-animation-timing-function:  linear;
+}
+
+@-webkit-keyframes rotatingLoader{
+  0%{     -webkit-transform: rotate(0deg);   }
+  8.32%{  -webkit-transform: rotate(0deg);   }
+  
+  8.33%{  -webkit-transform: rotate(30deg);  }
+  16.65%{ -webkit-transform: rotate(30deg);  }
+
+  16.66%{ -webkit-transform: rotate(60deg);  }
+  24.99%{ -webkit-transform: rotate(60deg);  }
+
+  25%{    -webkit-transform: rotate(90deg);  }
+  33.32%{ -webkit-transform: rotate(90deg);  }
+  
+  33.33%{ -webkit-transform: rotate(120deg); }
+  41.65%{ -webkit-transform: rotate(120deg); }
+  
+  41.66%{ -webkit-transform: rotate(150deg); }
+  49.99%{ -webkit-transform: rotate(150deg); }
+  
+  50%{    -webkit-transform: rotate(180deg); }
+  58.32%{ -webkit-transform: rotate(180deg); }
+  
+  58.33%{ -webkit-transform: rotate(210deg); }
+  66.65%{ -webkit-transform: rotate(210deg); }
+  
+  66.66%{ -webkit-transform: rotate(240deg); }
+  74.99%{ -webkit-transform: rotate(240deg); }
+  
+  75%{    -webkit-transform: rotate(270deg); }
+  83.32%{ -webkit-transform: rotate(270deg); }
+  
+  83.33%{ -webkit-transform: rotate(300deg); }
+  91.65%{ -webkit-transform: rotate(300deg); }
+  
+  91.66%{ -webkit-transform: rotate(330deg); }
+  100%{   -webkit-transform: rotate(330deg); }
+}
+
+
