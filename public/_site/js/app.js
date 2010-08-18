@@ -2,11 +2,9 @@
 
   THINGS TO DO
 
-    * Store login & api_key upon successful login
-    * Make sure api_key & login are stored over application uses
-    * Check api_key and login to decide screen to view
+    * Display Homescreen Message for iPad & iPhone
+    * Setup 
     * Add in a Timeout for login attempt
-    * Add Logout Functionality
     
   NEXT STEPS
   
@@ -24,35 +22,33 @@ Ext.setup({
     glossOnIcon:          false,
     onReady:              function() {
 
-        var loadingMarkup   = '<div class="wrapper"><div class="spins"><span class="t"></span><span class="r"></span><span class="b"></span><span class="l"></span></div></div>';
+        var loadingMarkup     = '<div class="loading wrapper"><div class="spins"><span class="t"></span><span class="r"></span><span class="b"></span><span class="l"></span></div></div>';
+        var standaloneMarkup  = '<div class="message wrapper"><p><strong>Install Tixato</strong><span>Add Tixato to your home screen by pressing this browsers <strong>+</strong> icon.</span></p></div>';
         
-        var loginSuccessMsg = 'Logged in as ';
-        var loginFailureMsg = 'Sorry, the info you provided is incorrect.';
-        var loginErrorMsg   = 'Sorry, an unknown error occured. Try Again.';
-        var loginBlankMsg   = 'Please fill in both username and password.';
-        var logoutMsg       = 'You are logged out.';
+        var loginSuccessMsg   = 'Logged in as ';
+        var loginFailureMsg   = 'Sorry, the info you provided is incorrect.';
+        var loginErrorMsg     = 'Sorry, an unknown error occured. Try Again.';
+        var loginBlankMsg     = 'Please fill in both username and password.';
+        var logoutMsg         = 'You are logged out.';
         
-      // Toggles Alert Messages
         var toggleAlertXCmp = function( setTo, style, msg ){
-          cmp = Ext.getCmp('loginAlertTxt');
-          
-          // Check to see if its and update or display state change
+            cmp = Ext.getCmp('loginAlertTxt');
             if( setTo != 'update' ){ ( setTo == 'show' ) ? cmp.show() : cmp.hide(); }
-          ( style ) ? cmp.update('<p class="'+style+'"><strong>'+msg+'</strong></p>') : cmp.update('');
+            ( style ) ? cmp.update('<p class="'+style+'"><strong>'+msg+'</strong></p>') : cmp.update('');
         };
         
         var setLocalStorage = function( sid, contents ){
-          window.console.log("<<<<: " + sid + " : " + contents);
+          // window.console.log("<<<<: " + sid + " : " + contents);
           localStorage.setItem( sid, contents );
         };
         
         var getLocalStorage = function( sid ){
           var localItem = localStorage.getItem( sid );
-          window.console.log(">>>>: " + sid + " : " + localItem);
+          // window.console.log(">>>>: " + sid + " : " + localItem);
           if( localItem ){
             return Ext.decode( localItem );
           }else{
-              return false;
+            return false;
           }
         };
         
@@ -82,6 +78,8 @@ Ext.setup({
             var loginInputs = document.getElementsByTagName("input");
             loginInputs[0].blur();
             loginInputs[1].blur();
+            
+            //form.getComponent('email').fieldEl.dom.blur();
             
           // Store Alert Display Object
             var loginAlertXCmp = Ext.getCmp('loginAlertTxt');
@@ -235,26 +233,41 @@ Ext.setup({
       // Hide Tab Bar on Initialize
         var tabBar = panel.getTabBar();
         tabBar.hide();
-      
-      // Research how to do this with Sencha
-      // See if login is stored
-      
-        if( localStorage && getLocalStorage('credentials')){
-          // Setup Login Screen
-            setAsLoggedIn('init');
+        
+      // check to see if it's iOS and not standalone
+        if ( !window.navigator.standalone && Ext.platform.isIPhoneOS ) {
+          var myPanel = new Ext.Panel({
+            fullscreen:   true,
+            html:         standaloneMarkup,
+            baseCls:      'x-plain',
+            cls:          'opacity0 standalone',
+            animation:    'fade',
+            hidden:       true
+          });
+          myPanel.show('pop');
+          myPanel.addClass('opacity100');
+        } else {
+
+        // See if login is stored - !!! Research how to do this with SenchaTouch instead
+        
+          if( localStorage && getLocalStorage('credentials')){
+            // Setup Login Screen
+              setAsLoggedIn('init');
+              
+            // Show Bottom Tab Bar
+              tabBar.show();
+              
+            // Fade to First Card
+              panel.setCard( 0, 'fade' );
             
-          // Show Bottom Tab Bar
-            tabBar.show();
-            
-          // Fade to First Card
-            panel.setCard( 0, 'fade' );
-          
-        }else{          
-          // Show Login Panel
-            panel.setCard( 2, 'fade');
-            
-            // Hide Logout Button        
-            Ext.getCmp('logoutFormButton').hide();
+          }else{          
+            // Show Login Panel
+              panel.setCard( 2, 'fade');
+              
+              // Hide Logout Button        
+              Ext.getCmp('logoutFormButton').hide();
+          }
+
         }
 
 

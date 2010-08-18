@@ -193,7 +193,7 @@ div.alert p.notify{
 /* Loading Indicator
 *********************************************************************/
 
-div.wrapper{
+div.loading.wrapper{
   width:                    100%;
   height:                   100%;
   background-color:         rgba(0,0,0,.5);
@@ -249,8 +249,8 @@ div.wrapper{
 
 /* These are the two lines that surround each of the 4 Span lines */
 
-.spins > span::before{ -webkit-transform: rotate(30deg);  }
-.spins > span::after{ -webkit-transform: rotate(-30deg);  }
+.spins > span::before{  -webkit-transform: rotate(30deg);   }
+.spins > span::after{   -webkit-transform: rotate(-30deg);  }
 
 /* Set Colors */
 
@@ -269,7 +269,7 @@ div.wrapper{
 
 /* Set Animation */
 
-.spins {
+.spins{
   -webkit-animation-name:             rotatingLoader;
   -webkit-animation-duration:         .5s;
   -webkit-animation-iteration-count:  infinite;
@@ -314,4 +314,117 @@ div.wrapper{
   100%{   -webkit-transform: rotate(330deg); }
 }
 
+/* Standalone Panel
+*********************************************************************/
 
+.standalone{
+  display:                    block;
+  position:                   relative;
+  font-size:                  1.125em;
+  font-size:                  20px;
+  -webkit-transition-duration:.2s;
+  -webkit-transition-property:-webkit-transform, opacity;
+  -webkit-transition-timing-function: ease;
+}
+
+.standalone div.message.wrapper{
+  width:                      14em;
+  height:                     4em;
+  position:                   absolute;
+  top:                        50%;
+  margin-top:                 -2.5em;
+  left:                       50%;
+  margin-left:                -7em;
+  -webkit-border-radius:      .75em;
+  -webkit-box-sizing:         border-box;
+  text-align:                 center;
+  border:                     .1em solid #ccc;
+  -webkit-box-shadow:         0 .15em .3em rgba(0,0,0,.5);
+  background-image:           -webkit-gradient( linear, 0% 0%, 0% 100%, from(#666), to(#333));
+  overflow:                   hidden;
+  display:                    table;
+  -webkit-background-clip:    content;
+  background-repeat:          no-repeat;
+  -webkit-background-composite: padding;
+}
+
+.standalone div.message.wrapper::before,
+.standalone div.message.wrapper::after{
+  content:                    "";
+  display:                    block;
+  position:                   absolute;
+}
+
+.standalone div.message.wrapper::before{
+  top:                        -.1em;
+  left:                       -.1em;
+  right:                      -.1em;
+  bottom:                     -.1em;
+  border:                     .1em solid #ccc;
+
+  -webkit-border-radius:      .725em;  
+  z-index:                    1;
+}
+
+.standalone div.message.wrapper::after{
+  top:                        0;
+  left:                       50%;
+  width:                      1em;
+  height:                     1em;
+  margin-left:                -.5em;
+  margin-top:                 -3em;
+  background-image:           -webkit-gradient( linear, 0% 0%, 0% 100%, from(rgba(226,229,234,.5)), to(rgba(226,229,234,.02)));
+  -webkit-border-radius:      .5em;
+  -webkit-transform-origin:   50% 50%;
+  -webkit-transform:          scale(25,8);
+  z-index:                    2;
+}
+
+.standalone div.message.wrapper p{
+  display:                    table-cell;
+  vertical-align:             middle;
+  padding:                    .75em .75em 1em .75em;
+  text-shadow:                0em -0.05em 0em #000;
+}
+.standalone div.message.wrapper p > strong,
+.standalone div.message.wrapper p > span,
+.standalone div.message.wrapper p > span > strong{
+  display:                    inline-block;
+  color:                      #ddd;
+}
+
+.standalone div.message.wrapper p > strong,
+.standalone div.message.wrapper p > span > strong{
+  font-weight:                bold;
+}
+
+.standalone div.message.wrapper p > strong{
+  font-size:                  1em;
+  line-height:                1em;
+  margin-bottom:              .4em;
+  color:                      #eee;
+}
+
+.standalone div.message.wrapper p > span{
+  font-size:                  .75em;
+  line-height:                1.25em;
+}
+
+.standalone div.message.wrapper p > span > strong{
+  font-size:                  2em;
+  height:                     .5em;
+  line-height:                .4em;
+  color:                      #fff;
+}
+
+/* Opacity Settings */
+
+.opacity0{
+  opacity: .25;
+  -webkit-transform: scale(.66, .66);
+}
+
+.opacity100{
+  opacity: .99;
+  -webkit-transform: scale(1, 1);
+}
