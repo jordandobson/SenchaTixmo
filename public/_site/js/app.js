@@ -23,23 +23,6 @@ Ext.setup({
     icon:                 'icon.png',
     glossOnIcon:          false,
     onReady:              function() {
-    
-        var timeline = new Ext.Component({
-            title: 'Timeline',
-            cls: 'timeline',
-            scroll: 'vertical',
-            tpl: [
-                '<tpl for=".">',
-                    '<div class="tweet">',
-                            '<div class="avatar"><img src="{profile_image_url}" /></div>',
-                            '<div class="tweet-content">',
-                                '<h2>{from_user}</h2>',
-                                '<p>{text}</p>',
-                            '</div>',
-                    '</div>',
-                '</tpl>'
-            ]
-        });
 
         var loadingMarkup   = '<div class="wrapper"><div class="spins"><span class="t"></span><span class="r"></span><span class="b"></span><span class="l"></span></div></div>';
         
@@ -49,74 +32,115 @@ Ext.setup({
         var loginBlankMsg   = 'Please fill in both username and password.';
         var logoutMsg       = 'You are logged out.';
         
+      // Toggles Alert Messages
+        var toggleAlertXCmp = function( setTo, style, msg ){
+          cmp = Ext.getCmp('loginAlertTxt');
+          
+          // Check to see if its and update or display state change
+            if( setTo != 'update' ){ ( setTo == 'show' ) ? cmp.show() : cmp.hide(); }
+          ( style ) ? cmp.update('<p class="'+style+'"><strong>'+msg+'</strong></p>') : cmp.update('');
+        };
+        
+        var setLocalStorage = function( sid, contents ){
+          window.console.log("<<<<: " + sid + " : " + contents);
+          localStorage.setItem( sid, contents );
+        };
+        
+        var getLocalStorage = function( sid ){
+          var localItem = localStorage.getItem( sid );
+          window.console.log(">>>>: " + sid + " : " + localItem);
+          if( localItem ){
+            return Ext.decode( localItem );
+          }else{
+              return false;
+          }
+        };
+        
+        var setAsLoggedIn = function( init ){
+        
+        // Get the Value from Local Storage
+            var creds = getLocalStorage('credentials');                                     // What if they don't support local Storage? Should we have a session variable?
+  
+          // Hide Login Elements & Show Logout Button
+            Ext.getCmp( 'loginFormFields' ).hide();
+            Ext.getCmp( 'loginFormButton' ).hide();
+            
+            if( !init ){
+              // Update The Success Message and Show it
+                toggleAlertXCmp('show', 'success', loginSuccessMsg + creds.login );
+              // Show logout button
+                Ext.getCmp( 'logoutFormButton' ).show();
+            }else{
+              // Update The Success Message Only
+                toggleAlertXCmp('update', 'success', loginSuccessMsg + creds.login);
+            }
+        };
 
         var attemptLogin = function(){
         
-        // Blur Inputs So keyboard Hides
-          var loginInputs = document.getElementsByTagName("input");
-          loginInputs[0].blur();
-          loginInputs[1].blur();
-        
-        // Clear the alert text          
-          Ext.getCmp('loginAlertTxt').update('');
+          // Blur Inputs So keyboard Hides
+            var loginInputs = document.getElementsByTagName("input");
+            loginInputs[0].blur();
+            loginInputs[1].blur();
+            
+          // Store Alert Display Object
+            var loginAlertXCmp = Ext.getCmp('loginAlertTxt');
           
-        // Get the Values of the login fields
-          fields = loginPanel.getValues();
-          
-        // Cancel form if either fields are empty and display message
-          if (fields.login == "" || fields.password == ""){
-            Ext.getCmp('loginAlertTxt').update( '<p class="blank"><strong>' + loginBlankMsg + '</strong></p>' );
-            return false;
-          }
-
-        // Show Loading Display
-          Ext.getBody().mask(false, loadingMarkup);
-
-          Ext.Ajax.request({
-              url:      '/login.json',
-              params:   loginPanel.getValues(),
-              success:  function(response, opts) {
-              
-              // Decode & Store JSON Response
-                res = Ext.decode(response.responseText);
-                usr = res.login;
-                key = res.api_key;
+          // Clear the alert text
+            toggleAlertXCmp('hide');
+            
+          // Get the Values of the login fields
+            fields = loginPanel.getValues();
+            
+          // Cancel form if either fields are empty and display message
+            if (fields.login == "" || fields.password == ""){
+              toggleAlertXCmp('show', 'required', loginBlankMsg );
+              return false;
+            }
+            
+          // Show Loading Display
+            Ext.getBody().mask(false, loadingMarkup);
+            
+          // Make AJAX Request
+            Ext.Ajax.request({
+                url:      '/login.json',
+                params:   loginPanel.getValues(),   // Move fields variable here
+                success:  function(response, opts) {
                 
-              // Update The Success Message
-                Ext.getCmp('loginAlertTxt').update( '<p class="success"><strong>' + loginSuccessMsg + usr + '</strong></p>' );
-
-              // Hide Login Elements & Show Logout Button
-                Ext.getCmp('loginFormFields').hide();
-                Ext.getCmp('loginFormButton').hide();
-                Ext.getCmp('logoutFormButton').show();
-                
-              // Hide Loading Display
-                Ext.getBody().unmask();
-
-              // Display the tab bar & Shows Panel
-                panel.setCard(0, null);
-                tabBar.show('fade');
-                
-              },
-              failure:  function(response, opts){
-                
-              // Show Failure Message              
-                Ext.getCmp('loginAlertTxt').update( '<p class="failure"><strong>' + loginFailureMsg + '</strong></p>' );
-                
-              // Hide Loading Display
-                Ext.getBody().unmask();
-              }
-          })
+                // Store & Decode JSON Response
+                  setLocalStorage( 'credentials', response.responseText );
+                  
+              // Setup the interface as the user is logged in
+                  setAsLoggedIn();
+                  
+                // Hide Loading Display
+                  Ext.getBody().unmask();
+  
+                // Display the tab bar & Shows Panel
+                  panel.setCard(0, null);
+                  tabBar.show('fade');
+                },
+                failure:  function(response, opts){
+                ///////////////////////////////////
+                  
+                // Show Failure Message
+                  toggleAlertXCmp('show', 'failure', loginFailureMsg );
+                  
+                // Hide Loading Display
+                  Ext.getBody().unmask();
+                }
+            })
         };
         
         var logoutUser = function(){
+          localStorage.removeItem('credentials');
           tabBar.hide('fade');
-          Ext.getCmp('loginAlertTxt').update( '<p class="notify"><strong>' + logoutMsg + '</strong></p>' );
-          Ext.getCmp('loginFormFields').show();
+          toggleAlertXCmp('show', 'notify', logoutMsg );
           Ext.getCmp('loginFormUsername').setValue('');
           Ext.getCmp('loginFormPassword').setValue('');
-          Ext.getCmp('loginFormButton').show();
-          Ext.getCmp('logoutFormButton').hide();
+          Ext.getCmp('loginFormFields'  ).show('fade');
+          Ext.getCmp('loginFormButton'  ).show('fade');
+          Ext.getCmp('logoutFormButton' ).hide();
         }
 
         var showsPanel = new Ext.Component({
@@ -161,7 +185,7 @@ Ext.setup({
         }
 
         var checkForEnter = function(val, inputField){
-          if(val == 13){ attemptLogin();}
+          if(val == 13){ attemptLogin(); }
         }
         
         var loginPanel = new Ext.form.FormPanel({
@@ -180,16 +204,18 @@ Ext.setup({
               items: [{
                 id:             'loginFormUsername',
                 xtype:          'emailfield',
-                name :          'login',
-                placeholder:    'Username',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+                name:           'login',
+                placeholder:    'Username',
+/*                 value:          'jordandobson',  */                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
                 baseCls:        'x-plain',
                 cls:            'custom',
                 listeners:{     keyup: function(thisField, e) { checkForEnter(e.browserEvent.keyCode, this); } }
               },{
                 xtype:          'passwordfield',
                 id:             'loginFormPassword',
-                name :          'password',
+                name:           'password',
                 placeholder:    'Password',
+/*                 value:          'awesome', */
                 baseCls:        'x-plain',
                 cls:            'custom',
                 listeners:{     keyup: function(thisField, e) { checkForEnter(e.browserEvent.keyCode, this); } }
@@ -203,22 +229,100 @@ Ext.setup({
           activeItem:   false,
           fullscreen:   true,
           items:        [showsPanel, receiptsPanel, loginPanel]
-        });        
+        });
 
+      
       // Hide Tab Bar on Initialize
         var tabBar = panel.getTabBar();
         tabBar.hide();
+      
+      // Research how to do this with Sencha
+      // See if login is stored
+      
+        if( localStorage && getLocalStorage('credentials')){
+          // Setup Login Screen
+            setAsLoggedIn('init');
+            
+          // Show Bottom Tab Bar
+            tabBar.show();
+            
+          // Fade to First Card
+            panel.setCard( 0, 'fade' );
+          
+        }else{          
+          // Show Login Panel
+            panel.setCard( 2, 'fade');
+            
+            // Hide Logout Button        
+            Ext.getCmp('logoutFormButton').hide();
+        }
 
-      // Hide Logout Button
-        Ext.getCmp('logoutFormButton').hide();        
-        
-      // Show Login Panel
-        panel.setCard(2, 'fade');
-        
-        
+
 /*******************************************************************************************************
-  OLD REFERENCE CODE
+  OLD REFERENCE CODE BELOW HERE BEEEE - ARRRRR!
+*******************************************************************************************************/        
+        
+
+/*******************************************************************************************************
+  LOGIN STORAGE
 *******************************************************************************************************/
+
+/*
+        var Creds = new Ext.data.Store({
+            model: 'credentials',
+            proxy: {
+                type: 'sessionstorage',
+                id  : 'loginCreds'
+            }
+        });
+*/
+        
+ /*
+       var product = '{ "products" : "yeah"}';
+        
+        var Creds = new Ext.data.LocalStorageProxy({
+          id  : 'loginCreds'
+        });
+        
+        new Ext.data.Store({
+            proxy: new Ext.data.LocalStorageProxy({
+                id: 'solitaire-games'
+            }),
+            model: 'Game',
+            autoLoad: false,
+        
+        Creds.add('{ "products" : "yeah"}' );
+        Creds.sync();
+        
+        window.console.log( Creds );
+*/
+        
+        
+       /*  localStorage.setItem("title", "My blog title"); */
+        
+
+  
+  
+/*
+          var timeline = new Ext.Component({
+            title: 'Timeline',
+            cls: 'timeline',
+            scroll: 'vertical',
+            tpl: [
+                '<tpl for=".">',
+                    '<div class="tweet">',
+                            '<div class="avatar"><img src="{profile_image_url}" /></div>',
+                            '<div class="tweet-content">',
+                                '<h2>{from_user}</h2>',
+                                '<p>{text}</p>',
+                            '</div>',
+                    '</div>',
+                '</tpl>'
+            ]
+        });
+*/
+  
+  
         
 /*
         Ext.override(Ext.form.Field, {

@@ -181,7 +181,7 @@ div.alert p.failure{
   background-color:       #dd2200;
 }
 
-div.alert p.blank{
+div.alert p.required{
   background-color:       #ff9900;
 }
 
