@@ -2,13 +2,14 @@
 
   THINGS TO DO
 
-    * Display Homescreen Message for iPad & iPhone
-    * Setup 
     * Add in a Timeout for login attempt
+    * Display Carousel for Shows Tab with images as sized backgrounds for better loading?
+    * Update the CSS for the Tab Bar for Retina Display
+    * Get Press on Poster and show next view
     
   NEXT STEPS
   
-    * Update the CSS for the Tab Bar for Retina Display
+
 
 */
 
@@ -31,26 +32,45 @@ Ext.setup({
         var loginBlankMsg     = 'Please fill in both username and password.';
         var logoutMsg         = 'You are logged out.';
         
+        var requireStandalone = true;
+
+/*******************************************************************************************************
+
+  ALERT CONTROLLER
+  
+*******************************************************************************************************/
+        
         var toggleAlertXCmp = function( setTo, style, msg ){
             cmp = Ext.getCmp('loginAlertTxt');
             if( setTo != 'update' ){ ( setTo == 'show' ) ? cmp.show() : cmp.hide(); }
             ( style ) ? cmp.update('<p class="'+style+'"><strong>'+msg+'</strong></p>') : cmp.update('');
         };
+
+
+/*******************************************************************************************************
+
+  LOCAL STORAGE
+
+*******************************************************************************************************/
         
         var setLocalStorage = function( sid, contents ){
-          // window.console.log("<<<<: " + sid + " : " + contents);
           localStorage.setItem( sid, contents );
         };
         
         var getLocalStorage = function( sid ){
           var localItem = localStorage.getItem( sid );
-          // window.console.log(">>>>: " + sid + " : " + localItem);
           if( localItem ){
             return Ext.decode( localItem );
           }else{
             return false;
           }
         };
+        
+/*******************************************************************************************************
+
+  SETTINGS / LOGIN SCREEN SETUP
+
+*******************************************************************************************************/
         
         var setAsLoggedIn = function( init ){
         
@@ -71,6 +91,12 @@ Ext.setup({
                 toggleAlertXCmp('update', 'success', loginSuccessMsg + creds.login);
             }
         };
+        
+/*******************************************************************************************************
+
+  LOGIN AJAX REQUEST FUNCTION
+
+*******************************************************************************************************/
 
         var attemptLogin = function(){
         
@@ -130,6 +156,12 @@ Ext.setup({
             })
         };
         
+/*******************************************************************************************************
+
+  LOGOUT FUNCTION
+
+*******************************************************************************************************/
+        
         var logoutUser = function(){
           localStorage.removeItem('credentials');
           tabBar.hide('fade');
@@ -140,14 +172,58 @@ Ext.setup({
           Ext.getCmp('loginFormButton'  ).show('fade');
           Ext.getCmp('logoutFormButton' ).hide();
         }
+        
+/*******************************************************************************************************
 
+  SHOWS PANELS & COMPONENTS
+
+*******************************************************************************************************/        
+        
+        var alertMessage = function(){
+          alert('hello');
+        };
+        
+        var showsPanel = new Ext.Carousel({
+          title:    'Shows',
+          cls:      'showsPanel',
+          iconCls:  'favorites',
+          items: [{
+               html: '<figure><span></span><img src="http://s3.amazonaws.com/chroma-files-production/posters/16/large.png" width="333" height="489" /></figure>',
+               cls: 'poster'
+           }, {
+               title: 'Tab 2',
+               html: '<figure><span></span><img src="http://s3.amazonaws.com/chroma-files-production/posters/3/large.png" width="333" height="489" /></figure>',
+               cls: 'poster',
+          }, {
+               title: 'Tab 3',
+               html: '<figure><span></span><img src="http://s3.amazonaws.com/chroma-files-production/posters/13/large.png" width="333" height="489" /></figure>',
+               cls: 'poster'
+           }, {
+               title: 'Tab 4',
+               html: '<figure><span></span><img src="http://s3.amazonaws.com/chroma-files-production/posters/15/large.png" width="333" height="489" /></figure>',
+               cls: 'poster'
+           }, {
+               title: 'Tab 5',
+               html: '<figure><span></span><img src="http://s3.amazonaws.com/chroma-files-production/posters/1/large.png" width="333" height="489" /></figure>',
+               cls: 'poster'
+           }]
+        });
+        
+/*******************************************************************************************************
+
+  MAIN PANELS
+
+*******************************************************************************************************/
+
+/*
         var showsPanel = new Ext.Component({
             title:    'Shows',
             cls:      'shows',
             scroll:   'vertical',
             iconCls:  'favorites',
-            html:     '<div class="alert nonform"><p class="notify"><strong>Shows is not yet implemented.</strong></p></div>'
+            
         });
+*/
         
         var receiptsPanel = new Ext.Component({
             title:    'Receipts',
@@ -156,6 +232,13 @@ Ext.setup({
             iconCls:  'info',
             html:     '<div class="alert nonform"><p class="notify"><strong>Receipts is not yet implemented.</strong></p></div>'
         });
+
+        
+/*******************************************************************************************************
+
+  LOGOUT / LOGOUT COMPONENTS
+
+*******************************************************************************************************/
 
         var loginAlert = new Ext.Component({
           id:         'loginAlertTxt',
@@ -185,6 +268,12 @@ Ext.setup({
         var checkForEnter = function(val, inputField){
           if(val == 13){ attemptLogin(); }
         }
+        
+/*******************************************************************************************************
+
+  SETTINGS / LOGIN / LOGOUT PANEL
+
+*******************************************************************************************************/
         
         var loginPanel = new Ext.form.FormPanel({
           id:         'loginAppForm',
@@ -221,6 +310,12 @@ Ext.setup({
             },
             loginButton, logoutButton ]
         });
+        
+/*******************************************************************************************************
+
+  TAB & TAB BAR PANELS
+
+*******************************************************************************************************/
 
         var panel = new Ext.TabPanel({
           tabBar:       { dock: 'bottom', layout: { pack: 'center' } },
@@ -229,13 +324,20 @@ Ext.setup({
           items:        [showsPanel, receiptsPanel, loginPanel]
         });
 
+/*******************************************************************************************************
+
+  INITIALIZE & SETUP CALLS
+
+*******************************************************************************************************/
+
       
       // Hide Tab Bar on Initialize
         var tabBar = panel.getTabBar();
         tabBar.hide();
         
       // check to see if it's iOS and not standalone
-        if ( !window.navigator.standalone && Ext.platform.isIPhoneOS ) {
+        if ( !window.navigator.standalone && Ext.platform.isIPhoneOS && requireStandalone ) {
+        
           var myPanel = new Ext.Panel({
             fullscreen:   true,
             html:         standaloneMarkup,
@@ -246,7 +348,15 @@ Ext.setup({
           });
           myPanel.show('pop');
           myPanel.addClass('opacity100');
+          
+          
         } else {
+        
+        /*******************************************************************************************************
+
+          RENDER DISPLAY SETUP & SETTINGS
+
+        *******************************************************************************************************/
 
         // See if login is stored - !!! Research how to do this with SenchaTouch instead
         
@@ -269,6 +379,9 @@ Ext.setup({
           }
 
         }
+        
+        
+        
 
 
 /*******************************************************************************************************
